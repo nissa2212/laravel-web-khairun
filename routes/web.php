@@ -27,3 +27,5 @@ Route::get('/about', function () {
 //hahahaha
 Route::get('/matakuliah', [MatakuliahController::class, 'index']);
 Route::get('/matakuliah/show/{kode?}', [MatakuliahController::class, 'show']);
+
+//nissa
