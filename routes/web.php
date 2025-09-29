@@ -24,5 +24,6 @@ Route::get('/about', function () {
     return view('halaman-about');
 });
 
+//hahahaha
 Route::get('/matakuliah', [MatakuliahController::class, 'index']);
 Route::get('/matakuliah/show/{kode?}', [MatakuliahController::class, 'show']);
