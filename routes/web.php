@@ -6,6 +6,7 @@ use App\Http\Controllers\MatakuliahController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PegawaiController;
 
 Route::get('/', function () {
     return view ('welcome');
@@ -40,3 +41,5 @@ Route::post('question/store', [QuestionController::class, 'store'])->name('quest
 
 Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
+
+Route::get('/pegawai', [PegawaiController::class, 'index'])->name('pegawai.index');
