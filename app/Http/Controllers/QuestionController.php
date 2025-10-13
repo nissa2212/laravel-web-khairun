@@ -26,19 +26,24 @@ class QuestionController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {           
+    {
        // dd($request->all());
 
        	$request->validate([
 		    'nama'  => 'required|max:10',
 		    'email' => ['required','email'],
-		    'pertanyaan' => 'required|max:300|min:8',
+		    // 'pertanyaan' => 'required|max:300|min:8',
         ],[
             'nama.required'=>'nama tidak boleh kosong',
             'email.email'=>'email tidak boleh kosong'
 		]);
 
-		return;
+		//  return redirect()->route(route : 'home');
+        //  return redirect()->back();
+    //    return redirect()->away(path : 'https://pcr.ac.id/');
+     return redirect()->route('home')->with('info', 'Selamat, Kamu Lulus!');
+    //  return redirect()->back()->with('info', 'Oops... Saldo Kamu Kurang!');
+
     }
 
     /**

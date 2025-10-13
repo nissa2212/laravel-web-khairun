@@ -1,0 +1,12 @@
+.navbar img{
+    height: 40px;
+    weight: auto;
+}
+@font-face {
+    font-family: 'nisa';
+    src: url('../fonts/nisa.ttf');
+}
+
+.font-custom{
+    font-family: 'nisa';
+}

@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,6 +10,10 @@
     <title>Halaman Utama - Selamat Datang!</title>
 
     {{-- Bootstrap 5 CSS dari CDN untuk styling --}}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+US+Modern:wght@100..400&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
@@ -16,7 +21,7 @@
     {{-- Bagian Navigasi --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="/">NamaProyek</a>
+            <a class="navbar-brand" href="/" >Project Nissa</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -51,14 +56,17 @@
 
         {{-- Features Section --}}
         <div class="row text-center">
-            <h2 class="mb-4">Fitur Unggulan Kami</h2>
+            <div class="font-custom">
+            <h2 class="mb-4 font-custom" >Fitur Unggulan Kami</h2>
+            </div>
 
             {{-- Fitur 1 --}}
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title">Desain Modern</h5>
-                        <p class="card-text">Dibangun dengan Bootstrap 5 untuk memastikan tampilan yang bersih dan responsif di semua perangkat.</p>
+                        <h5 class="card-title font-custom">Logo</h5>
+                       <img src="{{ asset('assets/images/logo.png') }}" alt="Logo">
+                       {{-- <img src="{{ asset('images/logo.png') }}" alt="Logo"> --}}
                     </div>
                 </div>
             </div>
@@ -66,7 +74,7 @@
             {{-- Fitur 2 --}}
            <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Form Pertanyaan</h5>
+        <h5 class="card-title font-custom">Form Pertanyaan</h5>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -74,6 +82,12 @@
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
+            </div>
+        @endif
+
+        @if (session('info'))
+            <div class="alert alert-info">
+                {!! session('info') !!}
             </div>
         @endif
         <form action="{{ route('question.store') }}" method="POST">
@@ -100,7 +114,7 @@
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">Mudah Dikustomisasi</h5>
-                        <p class="card-text">Kode yang rapi dan terstruktur, memudahkan Anda untuk mengubah konten sesuai kebutuhan proyek.</p>
+                        <p class="card-text font-custom">Kode yang rapi dan terstruktur, memudahkan Anda untuk mengubah konten sesuai kebutuhan proyek.</p>
                     </div>
                 </div>
             </div>
