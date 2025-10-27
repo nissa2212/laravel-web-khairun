@@ -1,6 +1,6 @@
-@extends('admin.template')
-@section('title','Tambah Pelanggan')
-@section('content')
+    @extends('admin.layouts.app')
+    @section('title', 'tambah pelanggan')
+    @section('content')
 
         <div class="py-4">
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
