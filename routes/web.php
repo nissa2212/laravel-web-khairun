@@ -45,9 +45,10 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('question/store', [QuestionController::class, 'store'])
 		->name('question.store');
 
-//auth
-Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
-Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
+// Route auth
+Route::get('/auth', [AuthController::class, 'index'])->name('login');
+Route::post('/auth', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //pegawai
 Route::get('/pegawai', [PegawaiController::class, 'index'])->name('pegawai.index');
@@ -60,5 +61,7 @@ Route::resource('pelanggan', PelangganController::class);
 
 //user
 Route::resource('user', UserController::class);
+
+
 
 

@@ -1,6 +1,7 @@
     @extends('admin.layouts.app')
     @section('title', 'list pelanggan')
     @section('content')
+    
      {{-- content --}}
      <div class="py-4">
         <nav aria-label="breadcrumb" class="d-none d-md-inline-block">

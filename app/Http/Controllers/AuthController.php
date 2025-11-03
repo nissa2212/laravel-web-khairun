@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -11,6 +14,11 @@ class AuthController extends Controller
      */
     public function index()
     {
+        // Jika user sudah login, redirect ke dashboard
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
         return view('login-form');
     }
 
@@ -19,45 +27,46 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // Validasi input
+        // Validasi input - ubah username menjadi email
         $request->validate([
-            'username' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        $username = $request->input('username');
+        $email = $request->input('email');
         $password = $request->input('password');
 
-        // Validasi custom
-        $errors = [];
+        // Cari user berdasarkan email
+        $user = User::where('email', $email)->first();
 
-        // Cek password minimal 3 karakter
-        if (strlen($password) < 3) {
-            $errors[] = 'Password harus minimal 3 karakter.';
-        }
-
-        // Cek password mengandung huruf kapital
-        if (!preg_match('/[A-Z]/', $password)) {
-            $errors[] = 'Password harus mengandung minimal satu huruf kapital.';
-        }
-
-        // Jika ada errors, redirect back dengan pesan
-        if (!empty($errors)) {
-            return redirect('/auth')->withErrors($errors);
-        }
-
-        // Cek username dan password sama
-        if ($username === $password) {
-            // Login berhasil
-            return view('welcome')->with([
-                'message' => 'Login berhasil! Selamat datang ' . $username,
-                'username' => $username
-            ]);
-        } else {
-            // Login gagal
+        // Cek apakah email ditemukan
+        if (!$user) {
             return redirect('/auth')->withErrors([
-                'Username dan password tidak sesuai.'
-            ]);
+                'Email tidak ditemukan.'
+            ])->withInput($request->except('password'));
         }
+
+        // Cek password menggunakan Hash::check
+        if (!Hash::check($password, $user->password)) {
+            return redirect('/auth')->withErrors([
+                'Password tidak sesuai.'
+            ])->withInput($request->except('password'));
+        }
+
+        // Login berhasil - set session/auth dan redirect ke dashboard
+        Auth::login($user);
+
+        return redirect()->route('dashboard')->with([
+            'success' => 'Login berhasil! Selamat datang ' . $user->name
+        ]);
+    }
+
+    /**
+     * Logout
+     */
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/auth')->with('success', 'Logout berhasil!');
     }
 }
