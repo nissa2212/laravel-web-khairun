@@ -9,12 +9,19 @@ class PelangganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filterableColumns = ['gender'];
+        $searchableColumns = ['first_name', 'last_name', 'email'];
 
-		$data['dataPelanggan'] = Pelanggan::all();
-		return view('admin.pelanggan.index',$data);
+        // Panggil scope filter dan search untuk mengenerate query
+        $data['dataPelanggan'] = Pelanggan::filter($request, $filterableColumns)
+            ->search($request, $searchableColumns)
+            ->paginate(10)
+            ->withQueryString()
+            ->onEachSide(2);
 
+        return view('admin.pelanggan.index', $data);
     }
 
     /**
@@ -30,26 +37,16 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
-       //dd($request->all());
+        $data['first_name'] = $request->first_name;
+        $data['last_name'] = $request->last_name;
+        $data['birthday'] = $request->birthday;
+        $data['gender'] = $request->gender;
+        $data['email'] = $request->email;
+        $data['phone'] = $request->phone;
 
-       $data['first_name'] = $request->first_name;
-		$data['last_name'] = $request->last_name;
-		$data['birthday'] = $request->birthday;
-		$data['gender'] = $request->gender;
-		$data['email'] = $request->email;
-		$data['phone'] = $request->phone;
+        Pelanggan::create($data);
 
-		Pelanggan::create($data);
-
-		return redirect()->route('pelanggan.index')->with('success','Penambahan Data Berhasil!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route('pelanggan.index')->with('success','Penambahan Data Berhasil!');
     }
 
     /**
@@ -57,10 +54,8 @@ class PelangganController extends Controller
      */
     public function edit(string $id)
     {
-
         $data['dataPelanggan'] = Pelanggan::findOrFail($id);
         return view('admin.pelanggan.edit', $data);
-
     }
 
     /**
@@ -68,21 +63,18 @@ class PelangganController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $pelanggan_id = $id;
+        $pelanggan = Pelanggan::findOrFail($pelanggan_id);
 
-    $pelanggan_id = $id;
-    $pelanggan = Pelanggan::findOrFail($pelanggan_id);
+        $pelanggan->first_name = $request->first_name;
+        $pelanggan->last_name = $request->last_name;
+        $pelanggan->birthday = $request->birthday;
+        $pelanggan->gender = $request->gender;
+        $pelanggan->email = $request->email;
+        $pelanggan->phone = $request->phone;
 
-    $pelanggan->first_name = $request->first_name;
-    $pelanggan->last_name = $request->last_name;
-    $pelanggan->birthday = $request->birthday;
-    $pelanggan->gender = $request->gender;
-    $pelanggan->email = $request->email;
-    $pelanggan->phone = $request->phone;
-
-    $pelanggan->save();
-    return redirect()->route('pelanggan.index')->with('success', 'Perubahan Data Berhasil!');
-
-
+        $pelanggan->save();
+        return redirect()->route('pelanggan.index')->with('success', 'Perubahan Data Berhasil!');
     }
 
     /**
@@ -90,12 +82,8 @@ class PelangganController extends Controller
      */
     public function destroy(string $id)
     {
-
-    $pelanggan = Pelanggan::findOrFail($id);
-
-    $pelanggan->delete();
-    return redirect()->route('pelanggan.index')->with('success', 'Data berhasil dihapus');
-
-
+        $pelanggan = Pelanggan::findOrFail($id);
+        $pelanggan->delete();
+        return redirect()->route('pelanggan.index')->with('success', 'Data berhasil dihapus');
     }
 }
